@@ -25,3 +25,9 @@ A PHP-MySQL based web application developed to track and record late arrivals of
    - Import the `.sql` file from the project (if available)
 6. Open your browser and visit:
     http://localhost/latecomer_tracker
+
+   ## 🎥 Demo Video
+
+Watch a demo of how the project works:  
+[ Click to View on Google Drive](https://drive.google.com/file/d/16F9BBvmcGWMmHno3jsUQKvDyNWatkZ1X/view?usp=drive_link)
+
