@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Student Streams</title>
+    <link rel="stylesheet" href="admin_style.css">
+</head>
+<body>
+    <header>
+    <nav>
+        <h1>Admin Dashboard</h1>
+        <button id="logout" onclick="window.location.href='logout.php'">Logout</button>
+    </nav>
+</header>
+
+    <main>
+        <section id="streams-section">
+            <h2>Student Streams Overview</h2>
+            <div class="stream-container">
+                <!-- BSc Stream -->
+                <div class="stream-card" id="bsc">
+                    <h3>BA</h3>
+                    <a href="bsc.html" class="view-students"><button>View Students</button></a>
+                </div>
+
+                <!-- BCom Stream -->
+                <div class="stream-card" id="bcom">
+                    <h3>BCom</h3>
+                    <a href="bcom.html" class="view-students"><button>View Students</button></a>
+                </div>
+
+                <!-- BBA Stream -->
+                <div class="stream-card" id="bba">
+                    <h3>BBA</h3>
+                    <a href="bba.html" class="view-students"><button>View Students</button></a>
+                </div>
+
+                <!-- BA Stream -->
+                <div class="stream-card" id="ba">
+                    <h3>BSc</h3>
+                    <a href="ba.html" class="view-students"><button>View Students</button></a>
+                </div>
+
+                <!-- MSc Stream -->
+                <div class="stream-card" id="msc">
+                    <h3>MSc</h3>
+                    <a href="msc.html" class="view-students"><button>View Students</button></a>
+                </div>
+
+                <!-- BCA Stream -->
+                <div class="stream-card" id="bca">
+                    <h3>BCA</h3>
+                    <a href="bca.html" class="view-students"><button>View Students</button></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- QR Code Scanner Section -->
+        <section id="qr-scanner">
+            <h2>Scan QR Code to Mark Latecomer</h2>
+            <div style="text-align: center;">
+                <div id="reader" style="width: 300px; margin: auto;"></div>
+                <p>Scanned Student ID: <span id="scanned-result"></span></p>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script>
+        function startScanner() {
+            const scanner = new Html5Qrcode("reader");
+
+            scanner.start(
+                { facingMode: "environment" }, // Use back camera
+                { fps: 10, qrbox: 250 },
+                qrCodeMessage => {
+                    document.getElementById("scanned-result").innerText = qrCodeMessage;
+
+                    // Send scanned data to backend (scan_qr.php)
+                    fetch('scan_qr.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: 'student_id=' + encodeURIComponent(qrCodeMessage)
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert("Student marked as late!");
+                        location.reload();
+                    })
+                    .catch(error => console.error("Error:", error));
+                },
+                errorMessage => {
+                    console.log("Scanning...");
+                }
+            ).catch(err => console.log("Camera error: ", err));
+        }
+
+        startScanner();
+    </script>
+</body>
+</html>
